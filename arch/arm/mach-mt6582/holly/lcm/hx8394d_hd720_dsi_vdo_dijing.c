@@ -197,6 +197,14 @@ MODULE_DESCRIPTION("MTK TPS65132 I2C Driver");
 MODULE_LICENSE("GPL");
 #endif
 
+
+struct LCM_setting_table {
+    unsigned char cmd;
+    unsigned char count;
+    unsigned char para_list[128];
+};
+
+
 //update initial param for IC nt35521 0.01
 static struct LCM_setting_table lcm_initialization_setting[] = {
 

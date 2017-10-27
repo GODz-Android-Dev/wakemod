@@ -571,7 +571,7 @@ typedef struct {
 struct LCM_setting_table {
     unsigned cmd;
     unsigned char count;
-    unsigned char para_list[128];
+    unsigned char para_list[64];
 };
 
 typedef struct
