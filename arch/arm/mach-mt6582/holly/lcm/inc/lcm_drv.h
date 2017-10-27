@@ -518,6 +518,8 @@ typedef struct
     unsigned int		compatibility_for_nvk;
     unsigned int		cont_clock;
     unsigned int		ufoe_enable;
+		unsigned int		ufoe_vlc_disable;
+		unsigned int		ufoe_vlc_cfg;
     
     unsigned int		lcm_int_te_monitor;
     unsigned int		lcm_int_te_period;
@@ -568,11 +570,6 @@ typedef struct {
     unsigned char count;
     unsigned char para_list[128];
 } LCM_setting_table_V3;
-struct LCM_setting_table {
-    unsigned cmd;
-    unsigned char count;
-    unsigned char para_list[64];
-};
 
 typedef struct
 {
