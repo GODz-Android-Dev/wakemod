@@ -1,3 +1,4 @@
+// Move code from Android 4.2 base
 #ifndef _KD_CAMERA_HW_H_
 #define _KD_CAMERA_HW_H_
  
@@ -17,13 +18,12 @@
 
 //FIXME, should defined in DCT tool 
 //
-/*
 #ifndef GPIO_CAMERA_LDO_EN_PIN 
-#define GPIO_CAMERA_LDO_EN_PIN GPIO94
+#define GPIO_CAMERA_LDO_EN_PIN (GPIO94 | 0x80000000)
 #endif 
 //
 #ifndef GPIO_CAMERA_CMRST_PIN 
-#define GPIO_CAMERA_CMRST_PIN GPIO9
+#define GPIO_CAMERA_CMRST_PIN (GPIO9 | 0x80000000)
 #endif 
 //
 #ifndef GPIO_CAMERA_CMRST_PIN_M_GPIO
@@ -31,7 +31,7 @@
 #endif 
 //
 #ifndef GPIO_CAMERA_CMPDN_PIN 
-#define GPIO_CAMERA_CMPDN_PIN GPIO10
+#define GPIO_CAMERA_CMPDN_PIN (GPIO10 | 0x80000000)
 #endif 
 //
 #ifndef GPIO_CAMERA_LDO_EN_PIN_M_GPIO
@@ -43,7 +43,7 @@
 #endif 
 //
 #ifndef GPIO_CAMERA_CMRST1_PIN
-#define GPIO_CAMERA_CMRST1_PIN GPIO3
+#define GPIO_CAMERA_CMRST1_PIN (GPIO3 | 0x80000000)
 #endif
 //
 #ifndef GPIO_CAMERA_CMRST1_PIN_M_GPIO
@@ -51,15 +51,35 @@
 #endif
 //
 #ifndef GPIO_CAMERA_CMPDN1_PIN
-#define GPIO_CAMERA_CMPDN1_PIN GPIO4
+#define GPIO_CAMERA_CMPDN1_PIN (GPIO4 | 0x80000000)
 #endif
 //
 #ifndef GPIO_CAMERA_CMPDN1_PIN_M_GPIO
 #define GPIO_CAMERA_CMPDN1_PIN_M_GPIO GPIO_MODE_00
 #endif
 
+//AF VCM Pwd Pin
+#ifndef GPIO_VCAM_DVDD_EN
+#define GPIO_VCAM_DVDD_EN (GPIO168 | 0x80000000)
+#endif
 
+#ifndef GPIO_VCAM_DVDD_EN_M_GPIO
+#define GPIO_VCAM_DVDD_EN_M_GPIO GPIO_MODE_00
+#endif
 
+#ifndef GPIO_VCAM_MCLOCK_PIN
+#define GPIO_VCAM_MCLOCK_PIN (GPIO122 | 0x80000000)
+#endif
+
+#ifndef GPIO_CAMERA_AF_PWDN_PIN
+#define GPIO_CAMERA_AF_PWDN_PIN (GPIO10 | 0x80000000)
+#endif
+
+#ifndef GPIO_CAMERA_AF_PWDN_PIN_M_GPIO
+#define GPIO_CAMERA_AF_PWDN_PIN_M_GPIO GPIO_MODE_00
+#endif
+
+/*
 //i2c id for sensor device, MT8320_fpga, the I2C is attached on 1
 #define IMG_SENSOR_I2C_GROUP_ID 0
 

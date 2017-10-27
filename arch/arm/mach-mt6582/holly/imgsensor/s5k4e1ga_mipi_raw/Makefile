@@ -1,3 +1,5 @@
+
 include $(srctree)/drivers/misc/mediatek/Makefile.custom
-obj-y := cust_part_mbr.o
+
+obj-y += s5k4e1gamipiraw_Sensor.o
 

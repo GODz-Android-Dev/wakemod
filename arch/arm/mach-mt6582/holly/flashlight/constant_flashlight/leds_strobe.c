@@ -94,67 +94,84 @@ static DECLARE_MUTEX(g_strobeSem);
 
 static struct work_struct workTimeOut;
 
+/* before LUT[7] is Torch mode, after is Flashmode, so Torch index must be 
+    less than or equal to TORCH_MAX_INDEX, the max current is 375mA.
+    So, if need flash current less than 375mA, choose index less than 7(including 7),
+   if need flash current greater than 375mA, choose index larger than 7.
+   */
+#define MAX_LEVELS 32
+#define TORCH_MAX_INDEX    7
+static const MUINT32 strobeLevelLUT[MAX_LEVELS] =
+    {0, 1, 2, 3, 4, 5, 6, 7,/* <-Torch, Flash->*/ 4, 4, 5, 5, 6, 6 , 7, 7 , 8 , 8, 9 , 9 , 10 , 10 , 11 , 11 , 12 , 12, 13 , 13 , 14 , 14 , 15 , 15};
+
+extern int FLASHLIGHT_read_byte(u8 addr, u8 *data);
+extern int FLASHLIGHT_write_byte(u8 addr, u8 data);
+
 /*****************************************************************************
 Functions
 *****************************************************************************/
-#define GPIO_ENF GPIO_CAMERA_FLASH_EN_PIN
-#define GPIO_ENT GPIO_CAMERA_FLASH_MODE_PIN
-
-
-    /*CAMERA-FLASH-EN */
-
-
 extern int iWriteRegI2C(u8 *a_pSendData , u16 a_sizeSendData, u16 i2cId);
 extern int iReadRegI2C(u8 *a_pSendData , u16 a_sizeSendData, u8 * a_pRecvData, u16 a_sizeRecvData, u16 i2cId);
 static void work_timeOutFunc(struct work_struct *data);
 
 int FL_Enable(void)
 {
-	if(g_duty==0)
-	{
-		mt_set_gpio_out(GPIO_CAMERA_FLASH_EN_PIN,GPIO_OUT_ONE);
-		mt_set_gpio_out(GPIO_CAMERA_FLASH_MODE_PIN,GPIO_OUT_ZERO);
-		PK_DBG(" FL_Enable line=%d\n",__LINE__);
-	}
-	else
-	{	
-		mt_set_gpio_out(GPIO_CAMERA_FLASH_EN_PIN,GPIO_OUT_ONE);
-		mt_set_gpio_out(GPIO_CAMERA_FLASH_MODE_PIN,GPIO_OUT_ONE);
-		PK_DBG(" FL_Enable line=%d\n",__LINE__);
-	}
+    int value = 0;
 
+    u8 regValue0B = 0;
+    //read 0x0B to release the lock in case of driver ic entering standby mode.
+    FLASHLIGHT_read_byte(0x0B, &regValue0B);
+    PK_DBG(" FL_Enable :reg 0x0B :0x%x, LINE:%d\n", regValue0B, __LINE__);
+
+    if (g_duty <= TORCH_MAX_INDEX )//Torch Mode
+    {
+        PK_DBG(" FL_Enable : Torch Mode, duty :%d, LINE:%d\n", g_duty, __LINE__);
+
+        value = (strobeLevelLUT[g_duty] << 4) & 0xF0 ;
+
+        FLASHLIGHT_write_byte(0x09, value);//current setting
+        FLASHLIGHT_write_byte(0x0A, 0x02);//torch mode
+
+    }
+    else//Flash Mode
+    {
+        PK_DBG(" FL_Enable : Flash Mode, duty :%d, LINE:%d\n", g_duty, __LINE__);
+
+        value = strobeLevelLUT[g_duty]  & 0x0F;
+
+        FLASHLIGHT_write_byte(0x09, value);//current setting
+        FLASHLIGHT_write_byte(0x08, 0x07);//timeout:800ms
+        FLASHLIGHT_write_byte(0x0A, 0x03);//flash mode
+    }
     return 0;
 }
 
 int FL_Disable(void)
 {
+    u8 regValue0B = 0;
+     //read 0x0B to release the lock in case of driver ic entering standby mode.
+    FLASHLIGHT_read_byte(0x0B, &regValue0B);
+    PK_DBG(" FL_Disable :reg 0x0B :0x%x, LINE:%d\n", regValue0B, __LINE__);
 
-	mt_set_gpio_out(GPIO_CAMERA_FLASH_MODE_PIN,GPIO_OUT_ZERO);
-	mt_set_gpio_out(GPIO_CAMERA_FLASH_EN_PIN,GPIO_OUT_ZERO);
-	PK_DBG(" FL_Disable line=%d\n",__LINE__);
+    FLASHLIGHT_write_byte(0x0A, 0x00);//turn of flash
+    PK_DBG(" FL_Disable line=%d\n",__LINE__);
     return 0;
 }
 
 int FL_dim_duty(kal_uint32 duty)
 {
-	g_duty=duty;
-	PK_DBG(" FL_dim_duty line=%d\n",__LINE__);
+    PK_DBG(" FL_dim_duty , duty:%d, line=%d\n", duty, __LINE__);
+    if (duty > (MAX_LEVELS -1)) //Max duty is 31
+    {
+        duty = (MAX_LEVELS -1);
+    }
+    g_duty =  duty;
     return 0;
 }
 
 
 int FL_Init(void)
 {
-
-
-	if(mt_set_gpio_mode(GPIO_CAMERA_FLASH_EN_PIN,GPIO_MODE_00)){PK_DBG("[constant_flashlight] set gpio mode failed!! \n");}
-    if(mt_set_gpio_dir(GPIO_CAMERA_FLASH_EN_PIN,GPIO_DIR_OUT)){PK_DBG("[constant_flashlight] set gpio dir failed!! \n");}
-    if(mt_set_gpio_out(GPIO_CAMERA_FLASH_EN_PIN,GPIO_OUT_ZERO)){PK_DBG("[constant_flashlight] set gpio failed!! \n");}
-    /*Init. to disable*/
-    if(mt_set_gpio_mode(GPIO_CAMERA_FLASH_MODE_PIN,GPIO_MODE_00)){PK_DBG("[constant_flashlight] set gpio mode failed!! \n");}
-    if(mt_set_gpio_dir(GPIO_CAMERA_FLASH_MODE_PIN,GPIO_DIR_OUT)){PK_DBG("[constant_flashlight] set gpio dir failed!! \n");}
-    if(mt_set_gpio_out(GPIO_CAMERA_FLASH_MODE_PIN,GPIO_OUT_ZERO)){PK_DBG("[constant_flashlight] set gpio failed!! \n");}
-
     INIT_WORK(&workTimeOut, work_timeOutFunc);
     PK_DBG(" FL_Init line=%d\n",__LINE__);
     return 0;

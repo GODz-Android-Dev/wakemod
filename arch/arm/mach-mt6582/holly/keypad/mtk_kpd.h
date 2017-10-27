@@ -42,7 +42,7 @@
 }
 
 #define KPD_HAS_SLIDE_QWERTY	KPD_NO
-#if 0//KPD_HAS_SLIDE_QWERTY
+#if KPD_HAS_SLIDE_QWERTY
 static inline bool powerOn_slidePin_interface() {
 	return hwPowerOn(MT65XX_POWER_LDO_VCAM_IO, VOL_2800, "Qwerty slide");
 }
@@ -77,10 +77,11 @@ static inline void kpd_pwrkey_pmic_handler(unsigned long data){}
 void kpd_pmic_rstkey_handler(unsigned long pressed);
 
 //#define ONEKEY_REBOOT_NORMAL_MODE
-#define TWOKEY_REBOOT_NORMAL_MODE
+//#define TWOKEY_REBOOT_NORMAL_MODE
 //#define ONEKEY_REBOOT_OTHER_MODE
 //#define TWOKEY_REBOOT_OTHER_MODE
-#define KPD_PMIC_RSTKEY_MAP KEY_VOLUMEUP
-#define KPD_PMIC_LPRST_TD 3 /* timeout period. 0: 7sec; 1: 11sec; 2: 14sec; 3: 5sec */
+//#define KPD_PMIC_RSTKEY_MAP KEY_VOLUMEDOWN
+//#define KPD_PMIC_LPRST_TD 0 /* timeout period. 0: 7sec; 1: 11sec; 2: 14sec; 3: 5sec */
 
+extern bool power_key_ps ;
 #endif

@@ -3,7 +3,6 @@
 
 //#define CUST_LEDS_BACKLIGHT_PMIC_PARA /* parallel */
 //#define CUST_LEDS_BACKLIGHT_PMIC_SERI /* series */
-//#define NO_NEED_USB_LED
 enum mt65xx_led_mode
 {
 	MT65XX_LED_MODE_NONE,
