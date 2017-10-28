@@ -1781,6 +1781,21 @@ config MTK_LENS_GAF008AF_SUPPORT
 	bool "GAF008AF Lens Driver"
 	default n
 
+config MTK_LENS_OV5648AF_DARLING_SUPPORT
+	bool "OV5648AF Lens Driver"
+	default n
+
+config MTK_LENS_OV5648AF_DARLING_ZL_SUPPORT
+	bool "OV5648AF DARLING Lens Driver"
+	default n
+
+config MTK_LENS_OV5648AF_SUNWIN_SUPPORT
+	bool "OV5648AF SUNWIN Lens Driver"
+	default n
+
+config MTK_LENS_OV5648AF_TRULY_SUPPORT
+	bool "OV5648AF TRULY Lens Driver"
+	default n
 #
 # Camera EEPROM Calibration
 #
@@ -1795,6 +1810,10 @@ config MTK_CAM_CAL_BRCC064GWZ_3_SUPPORT
 
 config MTK_CAM_CAL_BRCB032GWZ_3_SUPPORT
        bool "BRCB032GWZ_3 EEPROM Driver"
+       default n
+
+config MTK_CAM_CAL_A5142OTP_SUPPORT
+       bool "A5142OTP EEPROM Driver"
        default n
 #
 # MTK_EXTMEM for LCA project
