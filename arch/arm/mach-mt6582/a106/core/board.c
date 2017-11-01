@@ -539,46 +539,6 @@ EXPORT_SYMBOL(mt_wifi_power_off);
 	#endif
 #endif
 #if defined(CFG_DEV_MSDC1)
-#if defined(CONFIG_MTK_WCN_CMB_SDIO_SLOT) && (CONFIG_MTK_WCN_CMB_SDIO_SLOT == 1)
-struct msdc_hw msdc1_hw = {
-    .clk_src        = MSDC_CLKSRC_200MHZ,
-    .cmd_edge       = MSDC_SMPL_FALLING,
-    .rdata_edge     = MSDC_SMPL_FALLING,
-    .wdata_edge     = MSDC_SMPL_FALLING,
-    .clk_drv        = 4,
-    .cmd_drv        = 3,
-    .dat_drv        = 3,
-    .clk_drv_sd_18	= 4,               /* sdr104 mode */
-    .cmd_drv_sd_18	= 4,
-    .dat_drv_sd_18	= 4,
-    .clk_drv_sd_18_sdr50	= 4,       /* sdr50 mode */
-    .cmd_drv_sd_18_sdr50	= 4,
-    .dat_drv_sd_18_sdr50	= 4,
-    .clk_drv_sd_18_ddr50	= 4,       /* ddr50 mode */
-    .cmd_drv_sd_18_ddr50	= 4,
-    .dat_drv_sd_18_ddr50	= 4,
-    .data_pins      = 4,
-    .data_offset    = 0,
-    .flags          = MSDC_SDIO_FLAG,
-    .dat0rddly		= 0,
-    .dat1rddly		= 0,
-    .dat2rddly		= 0,
-    .dat3rddly		= 0,
-    .dat4rddly		= 0,
-    .dat5rddly		= 0,
-    .dat6rddly		= 0,
-    .dat7rddly		= 0,
-    .datwrddly		= 0,
-    .cmdrrddly		= 0,
-    .cmdrddly       = 0,
-    .host_function	= MSDC_SDIO,
-    .boot           = 0,
-    .cd_level       = MSDC_CD_LOW,
-};
-
-
-#else
-
 struct msdc_hw msdc1_hw = {
     .clk_src        = MSDC_CLKSRC_200MHZ,
     .cmd_edge       = MSDC_SMPL_FALLING,

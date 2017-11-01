@@ -1449,8 +1449,9 @@ static struct platform_device actuator_dev = {
 	.name		  = "lens_actuator",
 	.id		  = -1,
 };
-static struct platform_device actuator_dev1 = {
-	.name		  = "lens_actuator1",
+//BEGIN<><DATE20131128><add the lens of fm50af2> panzaoyan
+static struct platform_device actuator_dev2Darling = {
+	.name		  = "lens_actuator2Darling",
 	.id		  = -1,
 };
 
