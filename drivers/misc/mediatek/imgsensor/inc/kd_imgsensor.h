@@ -81,6 +81,8 @@
 #define KDIMGSENSORIOC_X_SET_SHUTTER_GAIN_WAIT_DONE   _IOWR(IMGSENSORMAGIC,55,u32)//HDR
 //set mclk
 #define KDIMGSENSORIOC_X_SET_MCLK_PLL         _IOWR(IMGSENSORMAGIC,60,ACDK_SENSOR_MCLK_STRUCT)
+//set GPIO
+#define KDIMGSENSORIOC_X_SET_GPIO             _IOWR(IMGSENSORMAGIC,75,IMGSENSOR_GPIO_STRUCT)
 /*******************************************************************************
 *
 ********************************************************************************/
