@@ -24,6 +24,7 @@ obj-y	+= dct/dct/
 endif
 
 obj-y   +=  lcm/
+#obj-y	+=  hdmi/
 obj-y	+=  camera/camera/
 obj-y	+=  imgsensor/ov5648_mipi_raw_darling/
 obj-y	+=  imgsensor/ov5648_mipi_raw_truly/
