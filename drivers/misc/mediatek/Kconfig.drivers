@@ -1780,6 +1780,22 @@ config MTK_LENS_GAF002AF_SUPPORT
 config MTK_LENS_GAF008AF_SUPPORT
 	bool "GAF008AF Lens Driver"
 	default n
+
+config MTK_LENS_OV5648AF_DARLING_SUPPORT
+	bool "OV5648AF_DARLING Lens Driver"
+	default n
+
+config MTK_LENS_OV5648AF_DARLING_ZL_SUPPORT
+	bool "OV5648AF_DARLING_ZL Lens Driver"
+	default n
+
+config MTK_LENS_OV5648AF_SUNWIN_SUPPORT
+	bool "OV5648AF_SUNWIN Lens Driver"
+	default n
+
+config MTK_LENS_OV5648AF_TRULY_SUPPORT
+	bool "OV5648AF_TRULY Lens Driver"
+	default n
 #
 # Camera EEPROM Calibration
 #
