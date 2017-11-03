@@ -89,7 +89,7 @@ static DECLARE_MUTEX(g_strobeSem);
 #endif
 
 
-#define STROBE_DEVICE_ID 0xC6
+#define STROBE_DEVICE_ID 0x60
 
 
 static struct work_struct workTimeOut;
@@ -108,18 +108,31 @@ extern int iWriteRegI2C(u8 *a_pSendData , u16 a_sizeSendData, u16 i2cId);
 extern int iReadRegI2C(u8 *a_pSendData , u16 a_sizeSendData, u8 * a_pRecvData, u16 a_sizeRecvData, u16 i2cId);
 static void work_timeOutFunc(struct work_struct *data);
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 int FL_Enable(void)
 {
 	if(g_duty==0)
 	{
-		mt_set_gpio_out(GPIO_CAMERA_FLASH_EN_PIN,GPIO_OUT_ONE);
-		mt_set_gpio_out(GPIO_CAMERA_FLASH_MODE_PIN,GPIO_OUT_ZERO);
+		mt_set_gpio_out(GPIO_ENT,GPIO_OUT_ONE);
+		mt_set_gpio_out(GPIO_ENF,GPIO_OUT_ZERO);
 		PK_DBG(" FL_Enable line=%d\n",__LINE__);
 	}
 	else
-	{	
-		mt_set_gpio_out(GPIO_CAMERA_FLASH_EN_PIN,GPIO_OUT_ONE);
-		mt_set_gpio_out(GPIO_CAMERA_FLASH_MODE_PIN,GPIO_OUT_ONE);
+	{
+		mt_set_gpio_out(GPIO_ENT,GPIO_OUT_ONE);
+		mt_set_gpio_out(GPIO_ENF,GPIO_OUT_ONE);
 		PK_DBG(" FL_Enable line=%d\n",__LINE__);
 	}
 
@@ -129,8 +142,8 @@ int FL_Enable(void)
 int FL_Disable(void)
 {
 
-	mt_set_gpio_out(GPIO_CAMERA_FLASH_MODE_PIN,GPIO_OUT_ZERO);
-	mt_set_gpio_out(GPIO_CAMERA_FLASH_EN_PIN,GPIO_OUT_ZERO);
+	mt_set_gpio_out(GPIO_ENT,GPIO_OUT_ZERO);
+	mt_set_gpio_out(GPIO_ENF,GPIO_OUT_ZERO);
 	PK_DBG(" FL_Disable line=%d\n",__LINE__);
     return 0;
 }
@@ -147,13 +160,13 @@ int FL_Init(void)
 {
 
 
-	if(mt_set_gpio_mode(GPIO_CAMERA_FLASH_EN_PIN,GPIO_MODE_00)){PK_DBG("[constant_flashlight] set gpio mode failed!! \n");}
-    if(mt_set_gpio_dir(GPIO_CAMERA_FLASH_EN_PIN,GPIO_DIR_OUT)){PK_DBG("[constant_flashlight] set gpio dir failed!! \n");}
-    if(mt_set_gpio_out(GPIO_CAMERA_FLASH_EN_PIN,GPIO_OUT_ZERO)){PK_DBG("[constant_flashlight] set gpio failed!! \n");}
+	if(mt_set_gpio_mode(GPIO_ENF,GPIO_MODE_00)){PK_DBG("[constant_flashlight] set gpio mode failed!! \n");}
+    if(mt_set_gpio_dir(GPIO_ENF,GPIO_DIR_OUT)){PK_DBG("[constant_flashlight] set gpio dir failed!! \n");}
+    if(mt_set_gpio_out(GPIO_ENF,GPIO_OUT_ZERO)){PK_DBG("[constant_flashlight] set gpio failed!! \n");}
     /*Init. to disable*/
-    if(mt_set_gpio_mode(GPIO_CAMERA_FLASH_MODE_PIN,GPIO_MODE_00)){PK_DBG("[constant_flashlight] set gpio mode failed!! \n");}
-    if(mt_set_gpio_dir(GPIO_CAMERA_FLASH_MODE_PIN,GPIO_DIR_OUT)){PK_DBG("[constant_flashlight] set gpio dir failed!! \n");}
-    if(mt_set_gpio_out(GPIO_CAMERA_FLASH_MODE_PIN,GPIO_OUT_ZERO)){PK_DBG("[constant_flashlight] set gpio failed!! \n");}
+    if(mt_set_gpio_mode(GPIO_ENT,GPIO_MODE_00)){PK_DBG("[constant_flashlight] set gpio mode failed!! \n");}
+    if(mt_set_gpio_dir(GPIO_ENT,GPIO_DIR_OUT)){PK_DBG("[constant_flashlight] set gpio dir failed!! \n");}
+    if(mt_set_gpio_out(GPIO_ENT,GPIO_OUT_ZERO)){PK_DBG("[constant_flashlight] set gpio failed!! \n");}
 
     INIT_WORK(&workTimeOut, work_timeOutFunc);
     PK_DBG(" FL_Init line=%d\n",__LINE__);
@@ -244,7 +257,6 @@ static int constant_flashlight_ioctl(MUINT32 cmd, MUINT32 arg)
 				hrtimer_cancel( &g_timeOutTimer );
     		}
     		break;
-        
 		default :
     		PK_DBG(" No such command \n");
     		i4RetValue = -EPERM;

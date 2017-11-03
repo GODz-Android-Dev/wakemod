@@ -34,12 +34,10 @@
 #define APPLE_1_0A_CHARGER_CURRENT          CHARGE_CURRENT_650_00_MA
 #define APPLE_2_1A_CHARGER_CURRENT          CHARGE_CURRENT_800_00_MA
 
-/* Unlimit USB current */
-#define ADB_CURRENT_CMD_ENABLE
 
 /* Precise Tunning */
 #define BATTERY_AVERAGE_DATA_NUMBER	3	
-#define BATTERY_AVERAGE_SIZE 	30
+#define BATTERY_AVERAGE_SIZE 	15
 
 /* charger error check */
 #define BAT_LOW_TEMP_PROTECT_ENABLE         // stop charging if temp < MIN_CHARGE_TEMPERATURE 
@@ -107,17 +105,4 @@
 #endif
 
 //#define MTK_WIRELESS_CHARGER_SUPPORT 1
-
-/* Pump Express support (fast charging) */
-#ifdef CONFIG_MTK_PUMP_EXPRESS_SUPPORT
-#define TA_START_VCHR_TUNUNG_VOLTAGE	3700	// for isink blink issue
-#define TA_CHARGING_CURRENT			    CHARGE_CURRENT_2100_00_MA
-#undef V_CHARGER_MAX
-#ifdef TA_9V_SUPPORT
-#define V_CHARGER_MAX 9500				// 9.5 V
-#else
-#define V_CHARGER_MAX 6000				// 6.0 V
-#endif
-#endif
-
 #endif /* _CUST_BAT_H_ */ 
