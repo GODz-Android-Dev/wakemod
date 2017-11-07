@@ -1454,7 +1454,6 @@ static struct platform_device actuator_dev2Darling = {
 	.name		  = "lens_actuator2Darling",
   	.id		  = -1,
 };
-
 /*=======================================================================*/
 /* MT6575 jogball                                                        */
 /*=======================================================================*/
@@ -2119,9 +2118,12 @@ retval = platform_device_register(&dummychar_device);
         return retval;
     }
 #endif
-
-
-
+#if 1  //defined(CONFIG_ACTUATOR)
+    retval = platform_device_register(&actuator_dev2Darling);
+    if (retval != 0){
+        return retval;
+    }
+#endif
 //
 //=======================================================================
 // Camera ISP
